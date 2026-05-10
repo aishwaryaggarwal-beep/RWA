@@ -39,7 +39,9 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
             showWalletLoginFirst: false, // ✨ Prioritize Google/Email over MetaMask
           },
           embeddedWallets: {
-            createOnLogin: 'users-without-wallets',
+            ethereum: {
+              createOnLogin: 'users-without-wallets',
+            },
           },
           supportedChains: [polygonAmoy],
           // 🚫 HARD BLOCK: Stop searching for MetaMask/Phantom on page load
