@@ -30,6 +30,12 @@ app.use("/land", landRoutes);
 app.use("/tokens", faucetRoutes);
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`✅ Backend running on port ${PORT}`);
-});
+
+// Only listen locally. Vercel Serverless handles the listening automatically.
+if (process.env.NODE_ENV !== "production" && process.env.VERCEL !== "1") {
+  app.listen(PORT, () => {
+    console.log(`✅ Backend running on port ${PORT}`);
+  });
+}
+
+export default app;
