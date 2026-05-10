@@ -146,7 +146,7 @@ export const LandVerifierABI = [
           "type": "uint256"
         }
       ],
-      "name": "stateMutability",
+      "stateMutability": "view",
       "type": "function"
     },
     {
