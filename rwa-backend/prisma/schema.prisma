@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+}
+
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String
+  email          String    @unique
+  password       String
+  role           Role
+  walletAddress  String?   @unique
+
+  kyc            KYC?
+
+  createdAt      DateTime  @default(now())
+
+  landsOwned     Land[]
+  investments    Investment[]
+  landVotes      LandVote[]
+}
+
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
+  VALIDATOR
+}
+
+enum KycStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Investment {
+  id        Int     @id @default(autoincrement())
+
+  userId    Int
+  landId    Int
+  tokens    Int
+
+  user      User    @relation(fields: [userId], references: [id])
+  land      Land    @relation(fields: [landId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model KYC {
+  id              Int       @id @default(autoincrement())
+  userId          Int       @unique
+  firstName       String
+  middleName      String?
+  lastName        String
+  dob             DateTime
+  
+  // Address Details
+  country         String?   @default("India")
+  address         String
+  state           String?
+  city            String
+  pincode         String
+  taxResidency    String?   @default("India")
+
+  // Identity Info
+  documentType    String    // PAN, AADHAAR, etc.
+  documentIdNumber String?  // The actual number on the ID
+
+  documentCid     String
+  documentBackCid String?
+  selfieCid       String
+
+  documentIv      String
+  documentBackIv  String?
+  selfieIv        String
+
+  // Financial Profile
+  occupation      String?
+  employer        String?
+  incomeRange     String?
+  experience      String?
+  sourceOfFunds   String?
+  isPep           Boolean   @default(false)
+
+  // Web3 Verification
+  walletProofSignature String?
+
+  status          String    @default("PENDING")
+  rejectionReason String?
+  reviewedAt      DateTime?
+  
+  // 🤖 Custom Verification Fields (Simulated Trulioo)
+  verificationResult Json?
+  riskScore         Int?      @default(0)
+  attempts          Int       @default(1)
+
+  createdAt       DateTime  @default(now())
+
+  user            User      @relation(fields: [userId], references: [id])
+}
+
+
+model Land {
+  id               Int        @id @default(autoincrement())
+
+  title            String
+  description      String
+
+  location         String
+  area             Float
+  price            Float
+
+  totalTokens      Int
+  availableTokens  Int
+  minPurchase      Int        @default(1)
+  
+  tokenSymbol      String?    // e.g. "HERITAGE-1"
+  onChainId        Int?       // The actual ERC1155 Token ID
+  
+  status           LandStatus @default(PENDING)
+  isVerified       Boolean    @default(false)
+
+  deedCid          String?    // Real-world document proof
+  taxReportCid     String?    // Legal property history
+  propertyType     String?    @default("Agricultural")
+  annualRevenue    Float?     @default(0)
+  maintenanceCosts Float?     @default(0)
+
+  ownerId          Int
+  owner            User       @relation(fields: [ownerId], references: [id])
+
+  createdAt        DateTime   @default(now())
+
+  votes            LandVote[]
+  investments      Investment[]
+}
+
+model LandVote {
+  id        Int      @id @default(autoincrement())
+  landId    Int
+  userId    Int
+  vote      String   // "approve" | "reject"
+
+  land      Land     @relation(fields: [landId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([landId, userId])
+}
+
+enum LandStatus {
+  PENDING
+  VERIFIED
+  LISTED
+  REJECTED
+}

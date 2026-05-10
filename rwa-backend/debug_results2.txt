@@ -1,0 +1,8 @@
+Wallet is validator on-chain: true
+Total on-chain validators: 1
+LandVerifier owner: 0x9e96472400e33FB547b49dC5f7118a9ae1BA4B76
+Wallet is LandVerifier owner: true
+Land #1 on-chain title: 
+Land #1 isVerified: false
+Land #1 approveCount: 0
+HasVoted(1, wallet): false

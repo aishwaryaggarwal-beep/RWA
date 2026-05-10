@@ -1,0 +1,20 @@
+﻿----------------------------------------------------
+≡ƒÜÇ STARTING FULL RWA ECOSYSTEM DEPLOYMENT
+Deployer: 0x9e96472400e33FB547b49dC5f7118a9ae1BA4B76
+----------------------------------------------------
+ΓÅ│ Deploying LandToken...
+Γ£à LandToken deployed at: 0x1900BaF70068Aa4c701705AcfF149bD8C619FbC1
+ΓÅ│ Deploying RWAToken...
+Γ£à RWAToken deployed at: 0x3911ab968C7A17001263337B61eB5F6E354AEFed
+ΓÅ│ Deploying LandVerifier...
+Γ£à LandVerifier deployed at: 0xf0065bf0677E725d0f0882C7fd0059663D51aA36
+ΓÅ│ Deploying RWAMarketplace...
+Γ£à RWAMarketplace deployed at: 0x8Fe4c93a82035925B02152dbEb4D6f3332EE6494
+----------------------------------------------------
+≡ƒÄ» DEPLOYMENT SUMMARY
+LandToken:      0x1900BaF70068Aa4c701705AcfF149bD8C619FbC1
+RWAToken:       0x3911ab968C7A17001263337B61eB5F6E354AEFed
+LandVerifier:   0xf0065bf0677E725d0f0882C7fd0059663D51aA36
+RWAMarketplace: 0x8Fe4c93a82035925B02152dbEb4D6f3332EE6494
+----------------------------------------------------
+Next Step: Update src/lib/contracts/abi.ts in the frontend with these addresses.

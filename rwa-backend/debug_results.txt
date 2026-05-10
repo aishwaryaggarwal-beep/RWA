@@ -1,0 +1,7 @@
+Validator wallet: 0x9e96472400e33FB547b49dC5f7118a9ae1BA4B76
+LandToken addr: 0x0c673Bb31354933a102a3212C554C1EFb9C83779
+Contract owner: 0x9e96472400e33FB547b49dC5f7118a9ae1BA4B76
+IS_OWNER: true
+currentTokenId: 0
+balanceOf(seller, 0) = 0
+balanceOf(seller, 1) = 0

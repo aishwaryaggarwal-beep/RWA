@@ -1,0 +1,21 @@
+﻿Compiled 1 Solidity file successfully (evm target: paris).
+----------------------------------------------------
+≡ƒÜÇ STARTING FULL RWA ECOSYSTEM DEPLOYMENT
+Deployer: 0x9e96472400e33FB547b49dC5f7118a9ae1BA4B76
+----------------------------------------------------
+ΓÅ│ Deploying LandToken...
+Γ£à LandToken deployed at: 0x9E6cDA555f8b9e4e0470C051E55C3D0063ff5E7e
+ΓÅ│ Deploying RWAToken...
+Γ£à RWAToken deployed at: 0xABEd370CdB29D70C79e2e1d36DAe582c940909d2
+ΓÅ│ Deploying LandVerifier...
+Γ£à LandVerifier deployed at: 0x875B10D2217F516E376CCfD404761d6Da4ef9D70
+ΓÅ│ Deploying RWAMarketplace...
+Γ£à RWAMarketplace deployed at: 0xee75dE1Ad6F00782e18cA3D017Af1D9cB9170E7b
+----------------------------------------------------
+≡ƒÄ» DEPLOYMENT SUMMARY
+LandToken:      0x9E6cDA555f8b9e4e0470C051E55C3D0063ff5E7e
+RWAToken:       0xABEd370CdB29D70C79e2e1d36DAe582c940909d2
+LandVerifier:   0x875B10D2217F516E376CCfD404761d6Da4ef9D70
+RWAMarketplace: 0xee75dE1Ad6F00782e18cA3D017Af1D9cB9170E7b
+----------------------------------------------------
+Next Step: Update src/lib/contracts/abi.ts in the frontend with these addresses.
