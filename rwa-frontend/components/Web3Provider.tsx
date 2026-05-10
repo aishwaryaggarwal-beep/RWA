@@ -44,12 +44,7 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
             },
           },
           supportedChains: [polygonAmoy],
-          // 🚫 HARD BLOCK: Stop searching for MetaMask/Phantom on page load
-          externalWallets: {
-            injected: {
-              enabled: true, // ✅ Re-enabled for MetaMask support
-            }
-          },
+
 
         }}
       >
