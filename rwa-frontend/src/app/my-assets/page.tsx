@@ -219,7 +219,7 @@ export default function MyAssetsPage() {
                             </div>
                         </>
                     )}
-  )}
+
 
                 </div>
             </div>
