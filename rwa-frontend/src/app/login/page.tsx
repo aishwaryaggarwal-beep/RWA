@@ -33,7 +33,7 @@ export default function LoginPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const hasError = urlParams.get("error");
     
-    if (ready && authenticated && !hasError) {
+    if (ready && authenticated) {
       router.push("/dashboard");
     }
   }, [ready, authenticated, router]);
