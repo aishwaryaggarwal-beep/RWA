@@ -176,8 +176,22 @@ router.post("/privy-sync", async (req, res) => {
     });
 
     if (user) {
-      // Update wallet if not set
-      if (!user.walletAddress && walletAddress) {
+      // 🛡️ Logic for existing user:
+      // If the user's current wallet is DIFFERENT from the Privy wallet
+      if (user.walletAddress !== walletAddress && walletAddress) {
+        // Check if this NEW wallet is already taken by someone else
+        const walletInUse = await prisma.user.findUnique({
+          where: { walletAddress },
+        });
+
+        if (walletInUse && walletInUse.id !== user.id) {
+          return res.status(409).json({ 
+            message: "This wallet is already linked to a different email account." 
+          });
+        }
+
+        // It's safe to update the wallet for this email
+        console.log(`[PrivySync] Updating wallet for ${email} to ${walletAddress}`);
         user = await prisma.user.update({
           where: { id: user.id },
           data: { walletAddress },

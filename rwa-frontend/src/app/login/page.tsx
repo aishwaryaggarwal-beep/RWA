@@ -138,7 +138,10 @@ export default function LoginPage() {
           {/* 🌈 Privy Social Login */}
           <button 
             className="btn big" 
-            onClick={() => login()}
+            onClick={() => {
+              setError("");
+              login();
+            }}
             style={{ 
               width: "100%", 
               background: "rgba(255,255,255,0.05)",
