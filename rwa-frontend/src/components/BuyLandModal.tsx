@@ -163,7 +163,7 @@ export default function BuyLandModal({ land, onClose }: { land: any; onClose: ()
 
       // ✅ Step 4: Inform backend to sync DB
       const token = localStorage.getItem("token");
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land/${land.id}/sync`, { 
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/${land.id}/sync`, { 
           method: "POST",
           headers: {
               "Authorization": `Bearer ${token}`

@@ -19,7 +19,7 @@ export default function SellerPage() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

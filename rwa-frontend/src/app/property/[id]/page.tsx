@@ -56,7 +56,7 @@ export default function PropertyDetailsPage({ params }: { params: Promise<{ id: 
         const fetchDetails = async () => {
             try {
                 setConnectionError(false);
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land/${landId}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/${landId}`);
                 if (res.ok) {
                     const data = await res.json();
                     setLand(data);
@@ -84,14 +84,14 @@ export default function PropertyDetailsPage({ params }: { params: Promise<{ id: 
                 const token = localStorage.getItem("token");
                 if (token) {
                     try {
-                        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land/${landId}/sync`, {
+                        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/${landId}/sync`, {
                             method: "POST",
                             headers: { "Authorization": `Bearer ${token}` }
                         });
                     } catch (syncErr) { console.warn("Background sync failed:", syncErr); }
                 }
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land/${landId}/holders`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/${landId}/holders`);
                 if (res.ok) {
                     const data = await res.json();
                     setHolders(data.holders);

@@ -70,7 +70,7 @@ export default function BuyLand() {
     // 3. Fetch lands
     const fetchLands = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land/all`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/all`);
         const data = await res.json()
         if (Array.isArray(data)) {
           setLands(data);

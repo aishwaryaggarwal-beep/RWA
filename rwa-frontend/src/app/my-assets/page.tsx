@@ -25,8 +25,8 @@ export default function MyAssetsPage() {
                 
                 // 1. Fetch available marketplace lands AND user's own listings
                 const [resAll, resMy] = await Promise.all([
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land/all`),
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/land/my`, {
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/all`),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/my`, {
                         headers: { Authorization: `Bearer ${token}` }
                     })
                 ]);
