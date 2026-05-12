@@ -154,11 +154,15 @@ class KYCService {
       if (faceMatchConfidence < 85) riskScore += 30;
 
       // 4️⃣ Final Decision
-      let status = "PENDING"; // Default to manual review for professional security
+      let status = "PENDING"; // Default to manual review for safety
+      
       if (riskScore < 15 && verificationResult.identityMatch === "FULL_MATCH") {
         status = "VERIFIED";
-      } else if (riskScore > 75) {
+      } else if (riskScore > 90) {
         status = "REJECTED";
+      } else {
+        // Any unknown name or partial match goes to manual review
+        status = "PENDING";
       }
 
       await prisma.kYC.update({
