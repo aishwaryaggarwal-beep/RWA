@@ -48,7 +48,7 @@ export default function BuyLand() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await fetch("http://127.0.0.1:3001/kyc/status", {
+        const res = await fetch("https://rwa-pied.vercel.app/kyc/status", {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {

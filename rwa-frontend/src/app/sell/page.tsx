@@ -64,7 +64,7 @@ export default function SellLand() {
             if (!token) return;
 
             // Fetch KYC
-            const resKyc = await fetch("http://127.0.0.1:3001/kyc/status", {
+            const resKyc = await fetch("https://rwa-pied.vercel.app/kyc/status", {
               headers: { Authorization: `Bearer ${token}` }
             });
             if (resKyc.ok) {
@@ -76,7 +76,7 @@ export default function SellLand() {
             }
 
             // Fetch Lands
-            const resLands = await fetch("http://127.0.0.1:3001/land/my", {
+            const resLands = await fetch("https://rwa-pied.vercel.app/land/my", {
               headers: { Authorization: `Bearer ${token}` }
             });
             if (resLands.ok) {
