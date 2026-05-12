@@ -6,6 +6,7 @@ import { useAccount, useConfig } from "wagmi";
 import { getConnectorClient } from "@wagmi/core";
 import AuthGuard from "@/src/components/AuthGuard";
 import { ADDRESSES, IdentityRegistryABI } from "@/src/lib/contracts/abi";
+import { API_URL } from "@/src/lib/api";
 import "./../admin.css";
 
 export default function KycDetail() {
