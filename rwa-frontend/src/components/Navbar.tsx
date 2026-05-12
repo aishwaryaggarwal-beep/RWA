@@ -144,7 +144,7 @@ export default function Navbar() {
             {mounted && JSON.parse(localStorage.getItem("user") || "{}").role?.toUpperCase() === "ADMIN" && (
                <div style={{ display: "flex", gap: "15px" }}>
                  <span style={{ cursor: "pointer", color: "#c084fc", fontWeight: "bold" }} onClick={() => router.push("/admin")}>⚡ Auditor Portal</span>
-                 <span style={{ cursor: "pointer", color: "#10b981", fontWeight: "bold" }} onClick={() => router.push("/admin/governance")}>⚖️ Governance</span>
+                 <span style={{ cursor: "pointer", color: "#10b981", fontWeight: "bold" }} onClick={() => router.push("/governance")}>⚖️ Governance</span>
                </div>
             )}
 
