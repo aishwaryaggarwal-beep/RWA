@@ -13,8 +13,15 @@ const app = express();
 /* ✅ CORS goes HERE */
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000", process.env.FRONTEND_URL],
+    origin: [
+      "http://localhost:3000", 
+      "http://127.0.0.1:3000", 
+      process.env.FRONTEND_URL,
+      "https://rwa-fu8n.vercel.app" // Explicit production fallback
+    ].filter(Boolean),
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
 
