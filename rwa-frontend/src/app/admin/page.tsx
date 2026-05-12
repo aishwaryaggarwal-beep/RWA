@@ -17,7 +17,7 @@ export default function AdminPage() {
       return;
     }
 
-    fetch("http://127.0.0.1:3001/admin/kyc", {
+    fetch(`${API_URL}/admin/kyc`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     }).then((res) => res.json()).then((data) => Array.isArray(data) ? setKycList(data) : setKycList([]));
     

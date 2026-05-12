@@ -72,7 +72,7 @@ export default function KycDetail() {
         }
     }
 
-    fetch(`http://127.0.0.1:3001/admin/kyc/${userId}/${action}`, {
+    fetch(`${API_URL}/admin/kyc/${userId}/${action}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -94,7 +94,7 @@ export default function KycDetail() {
   };
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:3001/admin/kyc/${userId}`, {
+    fetch(`${API_URL}/admin/kyc/${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
