@@ -449,7 +449,7 @@ export default function DashboardContent() {
           </div>
         )}
 
-        {(portfolioStats.assetCount === 0 && myLands.length === 0) && (
+        {(portfolioStats.assetCount === 0 && myLands.length === 0 && user?.role !== "ADMIN" && user?.role !== "VALIDATOR") && (
           <div style={{ background: "rgba(124, 58, 237, 0.1)", border: "1px dashed rgba(124, 58, 237, 0.5)", borderRadius: "16px", padding: "30px", marginBottom: "40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <h3 style={{ fontSize: "20px", fontWeight: "bold", margin: 0, color: "white" }}>Your Portfolio is Empty</h3>
