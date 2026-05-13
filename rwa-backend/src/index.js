@@ -17,7 +17,8 @@ app.use(
       "http://localhost:3000", 
       "http://127.0.0.1:3000", 
       process.env.FRONTEND_URL,
-      "https://rwa-fu8n.vercel.app" // Explicit production fallback
+      "https://rwa-fu8n.vercel.app", // Explicit production fallback
+      "https://rwa-pied.vercel.app"  // Active frontend domain
     ].filter(Boolean),
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
