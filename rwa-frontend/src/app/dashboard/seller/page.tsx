@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import AuthGuard from "@/src/components/AuthGuard";
+import { API_URL } from "@/src/lib/api";
 
 export default function SellerPage() {
   const [form, setForm] = useState({
@@ -19,7 +20,7 @@ export default function SellerPage() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/land`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

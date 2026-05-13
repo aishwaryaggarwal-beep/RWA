@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { useAccount, useConfig } from "wagmi";
 import { getConnectorClient } from "@wagmi/core";
 import { ADDRESSES, RWAMarketplaceABI, RWATokenABI } from "@/src/lib/contracts/abi";
+import { API_URL } from "@/src/lib/api";
 
 export default function BuyLandModal({ land, onClose }: { land: any; onClose: () => void }) {
   const [fractions, setFractions] = useState<number>(1);
@@ -163,7 +164,7 @@ export default function BuyLandModal({ land, onClose }: { land: any; onClose: ()
 
       // ✅ Step 4: Inform backend to sync DB
       const token = localStorage.getItem("token");
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/${land.id}/sync`, { 
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/land/${land.id}/sync`, { 
           method: "POST",
           headers: {
               "Authorization": `Bearer ${token}`

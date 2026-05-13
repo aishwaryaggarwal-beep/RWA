@@ -117,7 +117,7 @@ export default function ListLandModal({ land, onClose }: { land: any; onClose: (
             // Mark as listed in the backend
             try {
                 const token = localStorage.getItem("token");
-                await fetch(`https://rwa-pied.vercel.app/land/${land.id}/list`, {
+                await fetch(`https://rwa-fu8n.vercel.app/land/${land.id}/list`, {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` }
                 });

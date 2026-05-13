@@ -5,6 +5,7 @@ import ParticleBackground from "@/src/components/ParticleBackground";
 import { useAccount, usePublicClient } from "wagmi";
 import { ADDRESSES, LandTokenABI, RWATokenABI } from "@/src/lib/contracts/abi";
 import { formatUnits } from "viem";
+import { API_URL } from "@/src/lib/api";
 
 export default function MyAssetsPage() {
     const [ownedLands, setOwnedLands] = useState<any[]>([]);
@@ -25,8 +26,8 @@ export default function MyAssetsPage() {
                 
                 // 1. Fetch available marketplace lands AND user's own listings
                 const [resAll, resMy] = await Promise.all([
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/all`),
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/my`, {
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/land/all`),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/land/my`, {
                         headers: { Authorization: `Bearer ${token}` }
                     })
                 ]);

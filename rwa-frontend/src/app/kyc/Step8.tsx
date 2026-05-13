@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/src/lib/api";
 
 export default function Step8({ formData, setFormData, back }: any) {
   const [submitting, setSubmitting] = useState(false);
@@ -44,7 +45,7 @@ export default function Step8({ formData, setFormData, back }: any) {
       if (formData.selfieFile) data.append("selfieFile", formData.selfieFile);
 
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/kyc`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/kyc`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`

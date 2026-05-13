@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import ParticleBackground from "@/src/components/ParticleBackground";
+import { API_URL } from "@/src/lib/api";
 
 export default function LoginPage() {
   const { login, authenticated, ready } = usePrivy();
@@ -45,7 +46,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

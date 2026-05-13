@@ -6,6 +6,7 @@ import ParticleBackground from "@/src/components/ParticleBackground";
 import BuyLandModal from "@/src/components/BuyLandModal";
 import { useAccount, usePublicClient } from "wagmi";
 import { ADDRESSES, LandTokenABI } from "@/src/lib/contracts/abi";
+import { API_URL } from "@/src/lib/api";
 
 interface Land {
   id: number;
@@ -48,7 +49,7 @@ export default function BuyLand() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await fetch("https://rwa-pied.vercel.app/kyc/status", {
+        const res = await fetch("https://rwa-fu8n.vercel.app/kyc/status", {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {
@@ -70,7 +71,7 @@ export default function BuyLand() {
     // 3. Fetch lands
     const fetchLands = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}/land/all`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/land/all`);
         const data = await res.json()
         if (Array.isArray(data)) {
           setLands(data);

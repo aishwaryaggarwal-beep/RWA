@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AuthGuard from "@/src/components/AuthGuard";
 import ParticleBackground from "@/src/components/ParticleBackground";
+import { API_URL } from "@/src/lib/api";
 
 export default function AdminPage() {
   const [kycList, setKycList] = useState<any[]>([]);
