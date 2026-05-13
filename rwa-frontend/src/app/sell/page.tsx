@@ -75,12 +75,15 @@ export default function SellLand() {
               localStorage.setItem("user", JSON.stringify(user));
             }
 
-            // Fetch Lands
-            const resLands = await fetch(`${API_URL}/land/my`, {
+            // Fetch Lands with cache busting
+            console.log(`[RWA] Fetching assets from: ${API_URL}/land/my`);
+            const resLands = await fetch(`${API_URL}/land/my?t=${Date.now()}`, {
               headers: { Authorization: `Bearer ${token}` }
             });
             if (resLands.ok) {
-              setMyLands(await resLands.json());
+              const data = await resLands.json();
+              console.log(`[RWA] Assets retrieved: ${data.length}`, data);
+              setMyLands(data);
             }
           } catch (err) {
             console.error("Failed to fetch dashboard data", err);
