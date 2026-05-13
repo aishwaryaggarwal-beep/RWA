@@ -31,9 +31,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasError = urlParams.get("error");
-    
     if (ready && authenticated) {
       router.push("/dashboard");
     }
@@ -46,7 +43,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/login`, {
+      const res = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -175,4 +172,3 @@ export default function LoginPage() {
     </>
   );
 }
-

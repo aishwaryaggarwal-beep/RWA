@@ -47,7 +47,7 @@ export default function AuthGuard({ children }: any) {
           const walletAddress = privyUser.wallet?.address;
 
           if (email) {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/privy-sync`, {
+            const res = await fetch(`${API_URL}/privy-sync`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, name, walletAddress }),
@@ -76,7 +76,7 @@ export default function AuthGuard({ children }: any) {
       // 3. Already have token -> Verify once
       if (token && !hasChecked.current) {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/me`, {
+          const res = await fetch(`${API_URL}/me`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           if (res.ok) {
