@@ -7,7 +7,7 @@ import { useConnect, useAccount, useDisconnect } from "wagmi";
 import { API_URL } from "@/src/lib/api";
 
 export default function AuthGuard({ children }: any) {
-  const { user: privyUser, authenticated, ready } = usePrivy();
+  const { user: privyUser, authenticated, ready, logout: privyLogout } = usePrivy();
 
   const router = useRouter();
 
@@ -63,6 +63,11 @@ export default function AuthGuard({ children }: any) {
               const errData = await res.json();
               const errorParam = encodeURIComponent(errData.message || "sync_failed");
               const detailsParam = errData.error ? `&details=${encodeURIComponent(errData.error)}` : "";
+              
+              // 🛡️ Break the loop: Forcibly logout if sync fails
+              await privyLogout(); 
+              localStorage.clear();
+              
               router.push(`/login?error=${errorParam}${detailsParam}`);
             }
 
