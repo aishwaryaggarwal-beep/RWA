@@ -49,6 +49,7 @@ router.post("/login", async (req, res) => {
 });
 
 /* GET ME */
+router.get("/login", (req, res) => res.json({ status: "ok", message: "RWA Backend is active" }));
 router.get("/me", async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -102,7 +103,7 @@ router.post("/signup", async (req, res) => {
         id: user.id,
         email: user.email,
         role: user.role,
-       
+
       },
     });
   } catch (err) {
@@ -138,9 +139,9 @@ router.post("/connect-wallet", async (req, res) => {
       },
     });
 
-    res.json({ 
+    res.json({
       message: "Wallet verified & connected ✅",
-      user: updatedUser 
+      user: updatedUser
     });
 
 
@@ -164,8 +165,8 @@ router.post("/privy-sync", async (req, res) => {
         where: { walletAddress },
       });
       if (walletConflict && walletConflict.email !== email) {
-        return res.status(409).json({ 
-          message: "This wallet is already linked to a different email account." 
+        return res.status(409).json({
+          message: "This wallet is already linked to a different email account."
         });
       }
     }
@@ -185,8 +186,8 @@ router.post("/privy-sync", async (req, res) => {
         });
 
         if (walletInUse && walletInUse.id !== user.id) {
-          return res.status(409).json({ 
-            message: "This wallet is already linked to a different email account." 
+          return res.status(409).json({
+            message: "This wallet is already linked to a different email account."
           });
         }
 
@@ -233,12 +234,12 @@ router.post("/privy-sync", async (req, res) => {
   } catch (err) {
     console.error("[PrivySync] FATAL ERROR:", err);
     if (err.code === "P2002") {
-      return res.status(409).json({ 
+      return res.status(409).json({
         message: "Wallet or Email already registered to another account",
-        details: err.meta?.target 
+        details: err.meta?.target
       });
     }
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Internal server error during sync",
       error: err.message,
       stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
@@ -248,4 +249,4 @@ router.post("/privy-sync", async (req, res) => {
 
 
 
-export default router;
+export default router;
