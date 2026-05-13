@@ -1,1 +1,1 @@
-export const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://rwa-pied.vercel.app"}`;
+export const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}`;
