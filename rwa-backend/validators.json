@@ -1,0 +1,14 @@
+[
+  {
+    "name": "System Admin",
+    "wallet": "0x9e96472400e33FB547b49dC5f7118a9ae1BA4B76",
+    "role": "Lead Auditor",
+    "active": true
+  },
+  {
+    "name": "Global Validator 1",
+    "wallet": "0x29faF8075783f083454CBBcdB1D835C3714E9F144",
+    "role": "Property Inspector",
+    "active": true
+  }
+]

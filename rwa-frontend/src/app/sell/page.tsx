@@ -217,7 +217,7 @@ export default function SellLand() {
         </div>
     );
 
-    const historyLands = myLands.filter(l => l.status === "VERIFIED" || l.status === "LISTED" || l.status === "REJECTED");
+    const historyLands = myLands.filter(l => l.status === "VERIFIED" || l.status === "LISTED" || l.status === "REJECTED" || l.status === "APPROVED");
     const reviewLands = myLands.filter(l => l.status === "PENDING" || (!l.isVerified && l.status !== "REJECTED"));
 
     const parseLocation = (locStr: string) => {
