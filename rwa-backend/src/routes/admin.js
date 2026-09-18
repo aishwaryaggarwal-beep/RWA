@@ -51,8 +51,21 @@ router.get("/kyc/:userId", async (req, res) => {
     );
 
     // 🔥 Convert to base64 (send to frontend)
+    console.log(`[AdminAPI] Decrypting Document CID: ${kyc.documentCid}`);
     const docBase64 = decryptedDoc.toString("base64");
     const selfieBase64 = decryptedSelfie.toString("base64");
+    console.log(`[AdminAPI] Decrypted Doc Length: ${decryptedDoc.length} bytes`);
+
+    // 🕵️ Robust MIME Detection (Fallback for old or mislabeled records)
+    const magic = decryptedDoc.slice(0, 8).toString("hex");
+    let docMime = kyc.documentMimeType;
+
+    if (magic.startsWith("25504446")) docMime = "application/pdf";
+    else if (magic.startsWith("89504e470d0a1a0a")) docMime = "image/png";
+    else if (magic.startsWith("ffd8ff")) docMime = "image/jpeg";
+    else if (!docMime) docMime = "image/jpeg"; // Final fallback
+
+    console.log(`[AdminAPI] Final MIME for Document: ${docMime}`);
 
     res.json({
       firstName: kyc.firstName,
@@ -68,8 +81,8 @@ router.get("/kyc/:userId", async (req, res) => {
       verificationResult: kyc.verificationResult,
       attempts: kyc.attempts,
 
-      document: `data:${kyc.documentType};base64,${docBase64}`,
-      selfie: `data:${kyc.selfieType};base64,${selfieBase64}`,
+      document: `data:${docMime};base64,${docBase64}`,
+      selfie: `data:${kyc.selfieMimeType || "image/jpeg"};base64,${selfieBase64}`,
     });
   } catch (err) {
     console.error(err);

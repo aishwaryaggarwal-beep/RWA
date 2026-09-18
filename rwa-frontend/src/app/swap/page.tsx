@@ -7,8 +7,10 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchCh
 import { getConnectorClient } from "@wagmi/core";
 import { parseEther, formatUnits, parseGwei } from "viem";
 import { ADDRESSES, RWATokenABI } from "@/src/lib/contracts/abi";
+import { useRouter } from "next/navigation";
 
 export default function SwapPortal() {
+    const router = useRouter();
     const { address, isConnected, chainId, connector } = useAccount();
     const { switchChain } = useSwitchChain();
     const { writeContract, data: hash, error, isPending } = useWriteContract();
@@ -98,8 +100,18 @@ export default function SwapPortal() {
             <ParticleBackground />
             <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", position: "relative", zIndex: 1 }}>
                 
-                <div style={{ background: "rgba(15, 23, 42, 0.4)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "32px", padding: "40px", width: "100%", maxWidth: "450px", boxShadow: "0 25px 50px rgba(0,0,0,0.5)" }}>
+                <div style={{ background: "rgba(15, 23, 42, 0.4)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "32px", padding: "40px", width: "100%", maxWidth: "450px", boxShadow: "0 25px 50px rgba(0,0,0,0.5)", position: "relative" }}>
                     
+                    <button 
+                        onClick={() => router.back()} 
+                        style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", width: "32px", height: "32px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: "14px", transition: "all 0.2s" }} 
+                        onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "white"; }} 
+                        onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#94a3b8"; }}
+                        aria-label="Close"
+                    >
+                        ✕
+                    </button>
+
                     <div style={{ textAlign: "center", marginBottom: "40px" }}>
                         <h1 style={{ margin: 0, fontSize: "32px", fontWeight: "900", background: "linear-gradient(to right, #7c3aed, #4ade80)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Native Swap Portal</h1>
                         <p style={{ color: "#94a3b8", marginTop: "10px", fontSize: "14px" }}>Exchange POL for RWA Unified Tokens instantly</p>

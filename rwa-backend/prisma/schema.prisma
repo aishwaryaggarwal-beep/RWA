@@ -81,6 +81,9 @@ model KYC {
   documentBackIv  String?
   selfieIv        String
 
+  documentMimeType String?   @default("image/jpeg")
+  selfieMimeType   String?   @default("image/jpeg")
+
   // Financial Profile
   occupation      String?
   employer        String?

@@ -22,7 +22,7 @@ app.use(
     ].filter(Boolean),
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
   })
 );
 
@@ -62,3 +62,4 @@ if (process.env.NODE_ENV !== "production" && process.env.VERCEL !== "1") {
 }
 
 export default app;
+ 

@@ -45,7 +45,7 @@ export default function Step8({ formData, setFormData, back }: any) {
       if (formData.selfieFile) data.append("selfieFile", formData.selfieFile);
 
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/kyc`, {
+      const res = await fetch(`${API_URL}/kyc`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`

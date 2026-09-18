@@ -49,7 +49,7 @@ export default function BuyLand() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await fetch("https://rwa-fu8n.vercel.app/kyc/status", {
+        const res = await fetch(`${API_URL}/kyc/status`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {
@@ -71,7 +71,7 @@ export default function BuyLand() {
     // 3. Fetch lands
     const fetchLands = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/land/all`);
+        const res = await fetch(`${API_URL}/land/all`);
         const data = await res.json()
         if (Array.isArray(data)) {
           setLands(data);
@@ -117,8 +117,8 @@ export default function BuyLand() {
 
     // Listen for updates from the Buy Modal
     const handleUpdate = () => {
-        console.log("[Blockchain] Refreshing holdings after purchase...");
-        scanUserTokens();
+      console.log("[Blockchain] Refreshing holdings after purchase...");
+      scanUserTokens();
     };
     window.addEventListener("rwa-holdings-update", handleUpdate);
     return () => window.removeEventListener("rwa-holdings-update", handleUpdate);
@@ -171,8 +171,8 @@ export default function BuyLand() {
               lands.filter(land => (land as any).ownerId !== currentUserId).map((land) => {
                 const loc = parseLocation(land.location);
                 return (
-                  <div 
-                    key={land.id} 
+                  <div
+                    key={land.id}
                     className="property-card"
                     onClick={() => window.location.href = `/property/${land.id}`}
                     style={{ cursor: "pointer" }}

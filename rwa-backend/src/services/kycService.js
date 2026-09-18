@@ -80,6 +80,8 @@ class KYCService {
         walletProofSignature,
         status: "PENDING",
         attempts: attempts ? parseInt(attempts) : 1,
+        documentMimeType: documentFront.mimetype,
+        selfieMimeType: selfieFile.mimetype,
       },
     });
 

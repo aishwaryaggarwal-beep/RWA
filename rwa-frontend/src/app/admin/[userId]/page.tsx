@@ -20,6 +20,40 @@ export default function KycDetail() {
   const { address, isConnected } = useAccount();
   const config = useConfig();
 
+  // 🛡️ SECURE BLOB MANAGEMENT (Moved above early return to satisfy Rules of Hooks)
+  const [docUrl, setDocUrl] = useState<string | null>(null);
+  const [selfieUrl, setSelfieUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (data?.document) {
+      try {
+        const byteString = atob(data.document.split(',')[1]);
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+        const blob = new Blob([ab], { type: data.document.split(',')[0].split(':')[1].split(';')[0] });
+        const url = URL.createObjectURL(blob);
+        setDocUrl(url);
+      } catch (e) { console.error("Blob error:", e); }
+    }
+    if (data?.selfie) {
+      try {
+        const byteString = atob(data.selfie.split(',')[1]);
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+        const blob = new Blob([ab], { type: "image/jpeg" });
+        const url = URL.createObjectURL(blob);
+        setSelfieUrl(url);
+      } catch (e) { console.error("Blob error:", e); }
+    }
+
+    return () => {
+      if (docUrl) URL.revokeObjectURL(docUrl);
+      if (selfieUrl) URL.revokeObjectURL(selfieUrl);
+    };
+  }, [data]);
+
   const handleAction = async (action: string) => {
     if (action === "reject" && !reason) {
       alert("Please provide a reason for rejection");
@@ -122,6 +156,8 @@ export default function KycDetail() {
   const riskLevel = data.riskScore < 30 ? "LOW" : data.riskScore < 70 ? "MEDIUM" : "HIGH";
   const riskColor = riskLevel === "LOW" ? "#22c55e" : riskLevel === "MEDIUM" ? "#f59e0b" : "#ef4444";
 
+  const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
+
   return (
     <AuthGuard>
       <div style={{ background: "radial-gradient(circle at top right, #0f172a, #020617)", minHeight: "100vh", padding: "40px 20px" }}>
@@ -148,7 +184,7 @@ export default function KycDetail() {
             </div>
           </div>
 
-          {/* 🤖 NEW: FORENSIC ENGINE RESULTS */}
+          {/* 🤖 FORENSIC ENGINE RESULTS */}
           {vResult && (
             <div className="kyc-section" style={{ border: `1px solid ${riskColor}33`, background: `linear-gradient(135deg, rgba(15, 23, 42, 1), ${riskColor}05)` }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
@@ -169,13 +205,8 @@ export default function KycDetail() {
                   <span style={{ fontSize: "11px", color: "#64748b", textTransform: "uppercase" }}>Watchlist</span>
                   <div style={{ fontSize: "16px", fontWeight: "bold", color: vResult.watchlistCheck === 'CLEAR' ? '#22c55e' : '#ef4444', marginTop: "5px" }}>{vResult.watchlistCheck}</div>
                 </div>
-                <div style={{ background: "rgba(0,0,0,0.2)", padding: "15px", borderRadius: "12px" }}>
-                  <span style={{ fontSize: "11px", color: "#64748b", textTransform: "uppercase" }}>Attempts</span>
-                  <div style={{ fontSize: "16px", fontWeight: "bold", color: (data as any).attempts >= 3 ? '#ef4444' : '#60a5fa', marginTop: "5px" }}>{(data as any).attempts || 1}/3</div>
-                </div>
               </div>
 
-              {/* ⭐ NEW: BIOMETRICS DASHBOARD ⭐ */}
               {vResult.biometrics && (
                 <div style={{ marginTop: "20px", padding: "15px", background: "rgba(124, 58, 237, 0.05)", borderRadius: "12px", border: "1px solid rgba(124, 58, 237, 0.1)", marginBottom: "25px" }}>
                   <h4 style={{ margin: "0 0 15px 0", fontSize: "14px", color: "#c084fc" }}>Digital Biometric Analysis</h4>
@@ -187,25 +218,11 @@ export default function KycDetail() {
                     <div style={{ height: "40px", width: "1px", background: "rgba(255,255,255,0.1)" }}></div>
                     <div>
                       <span style={{ fontSize: "11px", color: "#64748b" }}>LIVENESS DETECTION</span>
-                      <div style={{ fontSize: "18px", fontWeight: "900", color: "#22c55e" }}>PASSED (3D REAL)</div>
-                    </div>
-                    <div style={{ height: "40px", width: "1px", background: "rgba(255,255,255,0.1)" }}></div>
-                    <div>
-                      <span style={{ fontSize: "11px", color: "#64748b" }}>SPOOF ATTEMPT</span>
-                      <div style={{ fontSize: "18px", fontWeight: "900", color: "#22c55e" }}>NONE DETECTED</div>
+                      <div style={{ fontSize: "18px", fontWeight: "900", color: "#22c55e" }}>PASSED</div>
                     </div>
                   </div>
                 </div>
               )}
-
-              <div style={{ background: "rgba(0,0,0,0.1)", padding: "15px", borderRadius: "12px" }}>
-                <span style={{ fontSize: "11px", color: "#64748b", textTransform: "uppercase", display: "block", marginBottom: "10px" }}>System Log Details</span>
-                {vResult.details?.map((detail: string, i: number) => (
-                  <div key={i} style={{ fontSize: "14px", color: "#cbd5e1", marginBottom: "8px", display: "flex", gap: "10px" }}>
-                    <span style={{ color: riskColor }}>•</span> {detail}
-                  </div>
-                ))}
-              </div>
             </div>
           )}
 
@@ -221,47 +238,65 @@ export default function KycDetail() {
             </div>
           </div>
 
-          {/* DOCUMENTS */}
+          {/* DOCUMENTS - SECURE VIEW */}
           <div className="kyc-section">
-            <h3>Documents Verification</h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+              <h3 style={{ margin: 0 }}>Secure Documents Verification</h3>
+              <div style={{ fontSize: "11px", color: "#f87171", background: "rgba(248, 113, 113, 0.1)", padding: "4px 10px", borderRadius: "20px", border: "1px solid rgba(248, 113, 113, 0.2)" }}>
+                🛡️ PROTECTED VIEW: DOWNLOADING DISABLED
+              </div>
+            </div>
 
             <div className="doc-grid">
-              <div className="doc-box">
-                <h4>Government ID</h4>
+              <div className="doc-box" onContextMenu={preventContextMenu}>
+                <h4 style={{ marginBottom: "15px", color: "#94a3b8" }}>Government ID Proof</h4>
                 {isPDF ? (
-                  <iframe src={data.document} width="100%" height="400px" style={{ border: "none", borderRadius: "8px" }} />
+                  <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    <iframe 
+                      src={`${docUrl}#toolbar=0&navpanes=0&scrollbar=0`} 
+                      width="100%" 
+                      height="500px" 
+                      style={{ border: "none", background: "#f8fafc" }} 
+                      title="ID Document" 
+                    />
+                    {/* Invisible overlay to block interaction with iframe menu */}
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none" }}></div>
+                  </div>
                 ) : isImage ? (
-                  <img src={data.document} className="preview-img" alt="ID Document" />
+                  <img src={docUrl || ""} className="preview-img" alt="ID Document" style={{ userSelect: "none", pointerEvents: "none" }} />
                 ) : (
-                  <p style={{ color: "#ef4444" }}>Unsupported file type</p>
+                  <div style={{ padding: "40px", textAlign: "center", color: "#94a3b8", background: "rgba(255,255,255,0.02)", borderRadius: "12px" }}>
+                    No Document Data Available
+                  </div>
                 )}
               </div>
 
-              <div className="doc-box">
-                <h4>Selfie Verification</h4>
-                {data.selfie?.startsWith("data:image") ? (
-                  <img src={data.selfie} className="preview-img" alt="User Selfie" />
+              <div className="doc-box" onContextMenu={preventContextMenu}>
+                <h4 style={{ marginBottom: "15px", color: "#94a3b8" }}>Live Selfie Verification</h4>
+                {selfieUrl ? (
+                  <img src={selfieUrl} className="preview-img" alt="User Selfie" style={{ userSelect: "none", pointerEvents: "none" }} />
                 ) : (
-                  <p style={{ color: "#ef4444" }}>Invalid selfie format</p>
+                  <div style={{ padding: "40px", textAlign: "center", color: "#94a3b8", background: "rgba(255,255,255,0.02)", borderRadius: "12px" }}>
+                    No Selfie Data Available
+                  </div>
                 )}
               </div>
             </div>
           </div>
 
-          {/* REJECTION REASON (Only if needed) */}
+          {/* REJECTION REASON */}
           {data.status === "PENDING" && (
             <div className="rejection-form">
               <h4 style={{ margin: "0 0 15px 0", color: "#ef4444", fontSize: "16px" }}>Rejection Notes</h4>
               <textarea
                 className="rejection-textarea"
-                placeholder="Explain why the documents are being rejected... (e.g., Image is blurry, name mismatch)"
+                placeholder="Explain why the documents are being rejected..."
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
             </div>
           )}
 
-          {/* PREVIOUS REJECTION REASON */}
           {data.status === "REJECTED" && data.rejectionReason && (
             <div className="rejection-form">
               <h4 style={{ margin: "0 0 5px 0", color: "#ef4444", fontSize: "16px" }}>Rejection Reason</h4>
@@ -273,18 +308,10 @@ export default function KycDetail() {
           <div className="kyc-actions">
             {data.status === "PENDING" ? (
               <>
-                <button
-                  className="btn-admin reject"
-                  onClick={() => handleAction("reject")}
-                  disabled={submitting}
-                >
+                <button className="btn-admin reject" onClick={() => handleAction("reject")} disabled={submitting}>
                   {submitting ? "Processing..." : "Reject Documents"}
                 </button>
-                <button
-                  className="btn-admin approve"
-                  onClick={() => handleAction("approve")}
-                  disabled={submitting}
-                >
+                <button className="btn-admin approve" onClick={() => handleAction("approve")} disabled={submitting}>
                   {submitting ? "Processing..." : "Approve KYC"}
                 </button>
               </>

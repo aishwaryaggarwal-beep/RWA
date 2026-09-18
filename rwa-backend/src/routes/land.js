@@ -375,13 +375,15 @@ router.get("/:id/holders", async (req, res) => {
     // but in this model, all purchases go to Investment.
     // If availableTokens > 0, the remaining is held by the original owner (or the contract)
     
-    const holders = land.investments.map(inv => ({
-      name: inv.user.name,
-      address: inv.user.walletAddress,
-      tokens: inv.tokens,
-      percentage: ((inv.tokens / land.totalTokens) * 100).toFixed(2),
-      role: inv.user.role
-    }));
+    const holders = land.investments
+      .filter(inv => inv.tokens > 0)
+      .map(inv => ({
+        name: inv.user.name,
+        address: inv.user.walletAddress,
+        tokens: inv.tokens,
+        percentage: ((inv.tokens / land.totalTokens) * 100).toFixed(2),
+        role: inv.user.role
+      }));
 
     // Add original owner's remaining stake if any
     const totalInvested = land.investments.reduce((sum, inv) => sum + inv.tokens, 0);

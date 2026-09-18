@@ -164,7 +164,7 @@ export default function BuyLandModal({ land, onClose }: { land: any; onClose: ()
 
       // ✅ Step 4: Inform backend to sync DB
       const token = localStorage.getItem("token");
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://rwa-fu8n.vercel.app"}/land/${land.id}/sync`, { 
+      await fetch(`${API_URL}/land/${land.id}/sync`, { 
           method: "POST",
           headers: {
               "Authorization": `Bearer ${token}`
@@ -210,10 +210,19 @@ export default function BuyLandModal({ land, onClose }: { land: any; onClose: ()
                             <span style={{ color: "#94a3b8" }}>Available Fractions</span>
                             <span style={{ color: "white", fontWeight: "bold" }}>{maxFractions} left</span>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <span style={{ color: "#94a3b8" }}>Your Balance</span>
-                            <span style={{ color: isInsufficient ? "#ef4444" : "#4ade80", fontWeight: "bold" }}>{Number(ethers.formatUnits(rwaBalance, 18)).toLocaleString()} RWA</span>
+                            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                                <span style={{ color: isInsufficient ? "#ef4444" : "#4ade80", fontWeight: "bold" }}>{Number(ethers.formatUnits(rwaBalance, 18)).toLocaleString()} RWA</span>
+                                <a 
+                                    href="/swap" 
+                                    style={{ background: "rgba(59, 130, 246, 0.15)", color: "#60a5fa", padding: "4px 10px", borderRadius: "6px", fontSize: "12px", textDecoration: "none", fontWeight: "500", border: "1px solid rgba(59, 130, 246, 0.3)" }}
+                                >
+                                    Buy RWA
+                                </a>
+                            </div>
                         </div>
+
                     </div>
 
                     <div style={{ marginBottom: "30px" }}>

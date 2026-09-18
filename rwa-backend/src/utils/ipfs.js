@@ -23,3 +23,10 @@ export async function uploadToIPFS(buffer, filename = "file") {
 
   return res.data.IpfsHash;
 }
+
+export async function fetchFromIPFS(cid) {
+  const res = await axios.get(`https://gateway.pinata.cloud/ipfs/${cid}`, {
+    responseType: "arraybuffer", // 🔥 crucial for binary data
+  });
+  return Buffer.from(res.data);
+}

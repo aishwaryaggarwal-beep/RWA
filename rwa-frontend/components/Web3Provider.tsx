@@ -9,6 +9,21 @@ import { http, injected } from "wagmi";
 
 const queryClient = new QueryClient();
 
+// 🛡️ Silence React 'isActive' prop warning leaked by third-party libraries (Privy/Wagmi)
+if (typeof window !== "undefined") {
+  const originalError = console.error;
+  console.error = (...args) => {
+    const errorString = args.join(' ').toLowerCase();
+    if (
+      errorString.includes('react does not recognize the') && 
+      errorString.includes('isactive')
+    ) {
+      return;
+    }
+    originalError(...args);
+  };
+}
+
 export const wagmiConfig = createConfig({
   chains: [polygonAmoy],
   transports: {

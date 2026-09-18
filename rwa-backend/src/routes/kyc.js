@@ -3,8 +3,55 @@ import jwt from "jsonwebtoken";
 import { upload } from "../middleware/upload.js";
 import kycService from "../services/kycService.js";
 import prisma from "../prisma.js";
+import { fetchFromIPFS } from "../utils/ipfs.js";
+import { decryptBuffer } from "../utils/encryption.js";
 
 const router = express.Router();
+
+// ✅ FETCH & DECRYPT KYC DOCUMENT
+router.get("/document/:type", async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { type } = req.params; // front, back, selfie
+
+    const kyc = await prisma.kYC.findUnique({
+      where: { userId: decoded.id }
+    });
+
+    if (!kyc) return res.status(404).json({ message: "KYC records not found" });
+
+    let cid, iv;
+    if (type === "front") { cid = kyc.documentCid; iv = kyc.documentIv; }
+    else if (type === "back") { cid = kyc.documentBackCid; iv = kyc.documentBackIv; }
+    else if (type === "selfie") { cid = kyc.selfieCid; iv = kyc.selfieIv; }
+    else return res.status(400).json({ message: "Invalid document type" });
+
+    if (!cid) return res.status(404).json({ message: "Document not found" });
+
+    // 1. Fetch encrypted blob from IPFS
+    const encryptedBuffer = await fetchFromIPFS(cid);
+
+    // 2. Decrypt it
+    const decryptedBuffer = decryptBuffer(encryptedBuffer, iv);
+
+    // 3. Serve with correct MIME type
+    const magic = decryptedBuffer.slice(0, 8).toString("hex");
+    let mimeType = type === "selfie" ? kyc.selfieMimeType : kyc.documentMimeType;
+
+    if (magic.startsWith("25504446")) mimeType = "application/pdf";
+    else if (magic.startsWith("89504e470d0a1a0a")) mimeType = "image/png";
+    else if (magic.startsWith("ffd8ff")) mimeType = "image/jpeg";
+    else if (!mimeType) mimeType = "image/jpeg";
+
+    res.setHeader("Content-Type", mimeType);
+    res.send(decryptedBuffer);
+
+  } catch (err) {
+    console.error("Document Decryption Error:", err);
+    res.status(500).json({ message: "Failed to retrieve document securely" });
+  }
+});
 
 router.post(
   "/",

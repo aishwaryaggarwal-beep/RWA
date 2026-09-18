@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { useAccount, useConfig } from "wagmi";
 import { getConnectorClient } from "@wagmi/core";
 import { ADDRESSES, RWAMarketplaceABI, LandTokenABI } from "@/src/lib/contracts/abi";
+import { API_URL } from "@/src/lib/api";
 
 export default function ListLandModal({ land, onClose }: { land: any; onClose: () => void }) {
     const [fractions, setFractions] = useState<number>(land.totalTokens || 1000);
@@ -117,7 +118,7 @@ export default function ListLandModal({ land, onClose }: { land: any; onClose: (
             // Mark as listed in the backend
             try {
                 const token = localStorage.getItem("token");
-                await fetch(`https://rwa-fu8n.vercel.app/land/${land.id}/list`, {
+                await fetch(`${API_URL}/land/${land.id}/list`, {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` }
                 });
